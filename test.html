@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .warpper {
+      width: 100vw;
+    }
+
+    .warpper-list {
+      display: flex;
+      width: auto;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+    }
+
+    .list-item {
+      height: 100px;
+      background: red;
+      margin-right: 10px;
+    }
+
+    #drag {
+      position: fixed;
+      top: 100px;
+      left: 1000px;
+      height: 100px;
+      width: 100px;
+      background-color: aqua;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="warpper">
+    <div class="warpper-list">
+      <div class="list-item"></div>
+      <div class="list-item"></div>
+      <div class="list-item"></div>
+      <div class="list-item"></div>
+      <div class="list-item"></div>
+      <div class="list-item"></div>
+      <div class="list-item"></div>
+      <div class="list-item"></div>
+    </div>
+  </div>
+  <input type="file" accept="image/*" onchange="handleFileChange" />
+  <button onclick="downLoadPhotograph()">下载</button>
+  <div id="drag"></div>
+  <script src="./traverse.js"></script>
+  <script>
+    function handleFileChange(event) {
+      console.log(event, 'event');
+    }
+    function downLoadPhotograph() {
+      let dataSource = {
+        company: 'Tencent'
+      }
+      let blob = new Blob([JSON.stringify(dataSource)], { type: 'application/json' });
+      let a = document.createElement('a');
+      a.download = 'company.json';
+      a.rel = 'noopener';
+      a.href = URL.createObjectURL(blob);
+      a.dispatchEvent(new MouseEvent('click'));
+      URL.revokeObjectURL(blob);
+    }
+    const obj = {
+      child: {
+        name: 'a'
+      }
+    }
+
+    let { child } = obj;
+    child.name = 'c';
+    console.log('%c Helloween', "color:green");
+  </script>
+  <script>
+    let oDiv = document.getElementById('drag'); //当前元素
+    let self = this; //上下文
+    oDiv.onmousedown = function (e) {
+      //鼠标按下，计算当前元素距离可视区的距离
+      let disX = e.clientX - oDiv.offsetLeft;
+      let disY = e.clientY - oDiv.offsetTop;
+    
+      document.onmousemove = function (e) {
+      //通过事件委托，计算移动的距离 
+      let l = e.clientX - disX;
+      let t = e.clientY - disY;
+      //移动当前元素 
+      oDiv.style.left = l + 'px';
+      oDiv.style.top = t + 'px';
+    };
+      document.onmouseup = function (e) {
+        document.onmousemove = null;
+        document.onmouseup = null;
+      };
+    }
+  </script>
+</body>
+
+</html>

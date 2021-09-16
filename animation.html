@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0px;
+      padding: 0px;
+    }
+
+    body {
+      background: rgba(0, 0, 0, .5);
+    }
+
+    #app {
+      height: 100vh;
+      width: 100vw;
+    }
+
+    .view {
+      height: 30vh;
+      width: 100vw;
+      /* background: url("./img/雪碧图-tuya2.png") no-repeat; */
+      background-size: calc(100vw * 20) calc(30vh * 6);
+    }
+
+    .mask {
+      position: relative;
+      height: 30vh;
+      width: 100vw;
+      z-index: 3;
+    }
+
+    .img-view {
+      position: fixed;
+      top: 0px;
+      left: 0px;
+    }
+  </style>
+</head>
+<body>
+  <!-- <div id="app"></div> -->
+  <!-- <div class="view" style="background-position: 0px 0px;"></div> -->
+  <!-- <img src="./img/雪碧图5-tuya.png" alt=""> -->
+  <div class="mask"></div>
+  <img class="img-view" />
+  <script>
+    function loadView2() {
+      return new Promise((resolve, reject) => {
+        let myImg = document.querySelector('.img-view');
+        myImg.width = window.innerWidth * 20;
+        myImg.height = window.innerHeight * 0.3 * 6;
+        myImg.src = './img/雪碧图-tuya2.png';
+        myImg.onload = () => {
+          resolve();
+        }
+        myImg.onerror = () => {
+          reject(new Error('加载失败'));
+        }
+      });
+    }
+
+    function loadView() {
+      return new Promise((resolve, reject) => {
+        let img = new Image();
+        const src = window.getComputedStyle(document.querySelector('.view')).background.match(/url\(\"?(.*)\"\)/)[1];
+        img.src = src;
+        img.onload = () => {
+          resolve();
+          img = null;
+        }
+        img.onerror = () => {
+          reject(new Error('加载失败'));
+          img = null;
+        }
+      });
+    }
+
+    loadView2().then(() => {
+      play2();
+    }).catch();
+    
+    function play() {
+      const photographyLength = 118;
+      const row = 6;
+      const col = 20;
+      const view = document.querySelector('.view');
+      let rowIndex = 0;
+      let colIndex = 0;
+      let index = 0;
+      const width = window.innerWidth;
+      const height = window.innerHeight * 0.3;
+      let timer = setInterval(() => {
+        if (index === photographyLength) {
+          console.log(true, 'rr');
+          clearInterval(timer);
+        }
+        
+        if (colIndex === 19) {
+          colIndex = 0;
+          rowIndex++;
+        } else {
+          index !== 0 && colIndex++;
+        }
+        index++;
+        view.style = `background-position: -${colIndex * width}px -${rowIndex * height}px;`;
+        console.log(colIndex, rowIndex, '->');
+      }, 80);
+    }
+    function play2() {
+      const photographyLength = 118;
+      const row = 6;
+      const col = 20;
+      const view = document.querySelector('.img-view');
+      let rowIndex = 0;
+      let colIndex = 0;
+      let index = 0;
+      const width = window.innerWidth;
+      const height = window.innerHeight * 0.3;
+      let timer = setInterval(() => {
+        if (index === photographyLength) {
+          console.log(true, 'rr');
+          clearInterval(timer);
+          return;
+        }
+        
+        if (colIndex === 19) {
+          colIndex = 0;
+          rowIndex++;
+        } else {
+          index !== 0 && colIndex++;
+        }
+        index++;
+        view.style = `left: -${colIndex * width}px;top: -${rowIndex * height}px;`;
+        console.log(colIndex, rowIndex, '->');
+      }, 80);
+    }
+  </script>
+</body>
+</html>
