@@ -21,6 +21,16 @@ function throttle(time, callback) {
   }
 }
 
-window.addEventListener('scroll', function() {
-  console.log('1234')
-})
+// window.addEventListener('scroll', function() {
+//   console.log('1234')
+// })
+
+function Neil() {
+  this.sayMyName = function() {
+    console.log('neil')
+  }
+}
+
+const n = new Neil()
+
+console.log(n.valueOf(), 'm')

@@ -1,1 +1,4 @@
-## hi everyone This is where I learn JavaScript
+## learn JavaScript
+
+## [lerna](https://lerna.js.org/) Monorepo
+
