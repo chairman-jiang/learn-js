@@ -3,7 +3,6 @@ import { arrayMethods } from './array';
 import { isArray, isObject, hasProto, def, hasOwn } from '../utils';
 
 const arrayKeys = Object.getOwnPropertyNames(arrayMethods);
-console.log(arrayKeys, 'arrayKeys');
 
 class Observer {
   constructor(value) {
@@ -105,3 +104,59 @@ setTimeout(() => {
   obj.subs.push({ name: 'max' })
 }, 1000);
 
+const array = [
+  {
+    id: 1,
+    label: '一级 1',
+    children: [
+      {
+        id: 4,
+        label: '二级 1-1',
+        children: [
+          {
+            id: 10,
+            label: '三级 1-1-2',
+            children: [
+              {
+                id: 11,
+                label: '四级 1-1-2-1',
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 2,
+    label: '一级 2',
+    children: [
+      { id: 5, label: '二级 2-1' },
+      { id: 6, label: '二级 2-2' },
+    ],
+  },
+];
+
+let max = 0;
+let target = {};
+
+const findNode = (node) => {
+  if (!node) {
+    return;
+  } else {
+    if (max < node.id) {
+      max = node.id;
+      target = node;
+    }
+  }
+  if (node.children && Array.isArray(node.children) && node.children.length) {
+    for (let i = 0; i< node.children.length; i++) {
+      const item = node.children[i];
+      findNode(item);
+    }
+  }
+}
+
+array.forEach(t => findNode(t));
+
+console.log(max, target, 'result');
